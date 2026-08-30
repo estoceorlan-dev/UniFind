@@ -1,0 +1,48 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "unifind-v2",
+          "appId": "1:230361033765:android:1b6b8daf3de1e159d8e3cc",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "unifind-v2",
+          "configurations": {
+            "android": "1:230361033765:android:1b6b8daf3de1e159d8e3cc",
+            "ios": "1:230361033765:ios:ad174b59193bec7ed8e3cc",
+            "macos": "1:230361033765:ios:ad174b59193bec7ed8e3cc",
+            "web": "1:230361033765:web:027209e7948d331ad8e3cc",
+            "windows": "1:230361033765:web:5c96fcb726a35b4cd8e3cc"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-southeast1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
