@@ -203,23 +203,17 @@ class _PostComposerScreenState extends State<PostComposerScreen>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text("New ${widget.type}"),
-          backgroundColor: const Color.fromARGB(255, 142, 142, 142),
-          foregroundColor: const Color.fromARGB(255, 0, 0, 0),
           actionsPadding: const EdgeInsets.only(right: 8),
           actions: [
-            ElevatedButton(
+            FilledButton(
               onPressed: isPosting ? null : () => _submitPost(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: const Color.fromARGB(255, 28, 58, 114),
-              ),
+
               child: isPosting
                   ? const SizedBox(
                       height: 16,

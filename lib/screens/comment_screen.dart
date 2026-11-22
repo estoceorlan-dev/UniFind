@@ -252,7 +252,7 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surfaceContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.all(10),
@@ -296,14 +296,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                   : "@$displayName",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
                               ),
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             text,
-                            style: const TextStyle(color: Colors.black),
+                            style: const TextStyle(),
                           ),
                           const SizedBox(height: 6),
                           Row(
@@ -385,11 +384,9 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget build(BuildContext context) {
        
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 226, 226, 226),
       appBar: AppBar(
         title: const Text("Comments"),
-        backgroundColor: const Color(0xFFe3f2fd),
-        foregroundColor: Colors.black,
+
         elevation: 0,
       ),
       body: Column(
@@ -472,7 +469,6 @@ class _CommentScreenState extends State<CommentScreen> {
                         hintText: "Write a comment...",
                         border: OutlineInputBorder(),
                         filled: true,
-                        fillColor: Colors.white,
                       ),
                     ),
                   ),

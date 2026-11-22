@@ -61,12 +61,10 @@ class _ReportsPageState extends State<ReportsPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 218, 218, 218),
       appBar: AppBar(
         title: const Text("Reports"),
         elevation: 1,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+
       ),
       body: _currentAdmin == null
           ? const Center(child: CircularProgressIndicator())
@@ -106,7 +104,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       final isUserReport = r['reportedUser'] != null;
 
                       return Material(
-                        color: Colors.white,
+                        color: theme.colorScheme.surface,
                         elevation: 1,
                         borderRadius: BorderRadius.circular(14),
                         child: InkWell(

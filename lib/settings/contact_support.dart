@@ -17,11 +17,11 @@ class ContactSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 201, 201, 201),
-        foregroundColor: Colors.black87,
+
+
         title: const Text(
           'Contact Support',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -41,7 +41,7 @@ class ContactSupport extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -58,7 +58,7 @@ class ContactSupport extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+
                       ),
                     ),
                     SizedBox(height: 8),
@@ -66,7 +66,7 @@ class ContactSupport extends StatelessWidget {
                       "We're here to assist you anytime.",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black54,
+
                       ),
                     ),
                   ],
@@ -80,7 +80,7 @@ class ContactSupport extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -99,7 +99,7 @@ class ContactSupport extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -115,7 +115,7 @@ class ContactSupport extends StatelessWidget {
                           "aunifind@gmail.com",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+
                           ),
                         )
                       ],
@@ -134,7 +134,7 @@ class ContactSupport extends StatelessWidget {
                           "estoce.orlan@gmail.com",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+
                           ),
                         )
                       ],
@@ -154,7 +154,7 @@ class ContactSupport extends StatelessWidget {
                           "+63 946 256 2663",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+
                           ),
                         )
                       ],
@@ -175,7 +175,7 @@ class ContactSupport extends StatelessWidget {
                             "Maricar Hagutin",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black87,
+
                             ),
                           ),
                         )
@@ -197,7 +197,7 @@ class ContactSupport extends StatelessWidget {
                             "Justine Manatad",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black87,
+
                             ),
                           ),
                         )

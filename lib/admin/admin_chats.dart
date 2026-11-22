@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets/admin_bottom_nav.dart';
@@ -89,16 +91,18 @@ class _AdminChatsState extends State<AdminChats> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 247, 254, 255),
+    return CampusScaffold(
       appBar: const AdminAppBar(),
       body: RefreshIndicator(
         onRefresh: _refreshConversations,
         child: StreamBuilder<QuerySnapshot>(
           stream: _convoStream,
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text("Could not load chats. Please try again later."));
+            }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const LoadingSkeleton();
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return ListView(
@@ -175,7 +179,7 @@ class _AdminChatsState extends State<AdminChats> {
                         lastMessage,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(color: Colors.black54),
+                        style: const TextStyle(),
                       ),
                       trailing: updatedAt != null
                           ? Text(
@@ -205,7 +209,7 @@ class _AdminChatsState extends State<AdminChats> {
           },
         ),
       ),
-      bottomNavigationBar: AdminBottomNav(
+      navigation: AdminBottomNav(
         currentIndex: 1,
       ),
     );

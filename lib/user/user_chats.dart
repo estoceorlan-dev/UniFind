@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets/user_bottom_nav.dart';
@@ -87,8 +89,7 @@ class _UserChatsState extends State<UserChats> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 247, 254, 255),
+    return CampusScaffold(
       appBar: UserAppBar(
         username: widget.username,
         userStream: FirebaseFirestore.instance
@@ -101,8 +102,11 @@ class _UserChatsState extends State<UserChats> {
         child: StreamBuilder<QuerySnapshot>(
           stream: _convoStream,
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text("Could not load chats. Please try again later."));
+            }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const LoadingSkeleton();
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return ListView(
@@ -184,7 +188,7 @@ class _UserChatsState extends State<UserChats> {
                         "$lastSender: $lastMessage",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(color: Colors.black54),
+                        style: const TextStyle(),
                       ),
                       trailing: lastTime != null
                           ? Text(
@@ -213,7 +217,7 @@ class _UserChatsState extends State<UserChats> {
           },
         ),
       ),
-      bottomNavigationBar: UserBottomNav(
+      navigation: UserBottomNav(
         currentIndex: 1,
         username: widget.username,
       ),

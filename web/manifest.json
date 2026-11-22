@@ -1,11 +1,11 @@
 {
-    "name": "unifind",
-    "short_name": "unifind",
+    "name": "UniFind",
+    "short_name": "UniFind",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#f3f6f3",
+    "theme_color": "#174d44",
+    "description": "Campus lost and found.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

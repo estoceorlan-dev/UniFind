@@ -6,11 +6,11 @@ class FAQ extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 201, 201, 201),
-        foregroundColor: Colors.black87,
+
+
         title: const Text(
           'FAQ',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -31,7 +31,7 @@ class FAQ extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -50,7 +50,7 @@ class FAQ extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+
                       ),
                     ),
                     SizedBox(height: 8),
@@ -58,7 +58,7 @@ class FAQ extends StatelessWidget {
                       "Find quick answers to your UniFind concerns.",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black54,
+
                       ),
                     ),
                   ],
@@ -69,30 +69,30 @@ class FAQ extends StatelessWidget {
             const SizedBox(height: 25),
 
             //faq list
-            _faqItem(
+            _faqItem(context,
               question: "What is UniFind?",
               answer:
                   "UniFind is an official mobile application for BCC students, faculty, and staff to receive announcements, lost and found reports, and stay updated with school-related information.",
             ),
 
-            _faqItem(
+            _faqItem(context,
               question: "Do I need an account to use UniFind?",
               answer:
                   "Yes. Users must create an account first to view content to ensure safety and reliablity of campus-related information inside the app.",
             ),
 
-            _faqItem(
+            _faqItem(context,
               question: "How long do we wait to get verified?",
               answer:
                   "Depending on the staff or admin's availability and schedule. About 1-3 business days. ",
             ),
-            _faqItem(
+            _faqItem(context,
               question: "Who manages UniFind?",
               answer:
                   "The app is managed by authorized BCC staff and designated administrators who ensure that all information is accurate and updated.",
             ),
 
-            _faqItem(
+            _faqItem(context,
               question: "Can I report an issue or bug?",
               answer:
                   '''Yes, there are two ways to report an issue or bug. 
@@ -111,11 +111,11 @@ The system's admin is named by "System Admin" as default.
   }
 
   // FAQ CARD WIDGET
-  Widget _faqItem({required String question, required String answer}) {
+  Widget _faqItem(BuildContext context, {required String question, required String answer}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -133,18 +133,18 @@ The system's admin is named by "System Admin" as default.
           style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
-            color: Colors.black87,
+
           ),
         ),
-        iconColor: Colors.black54,
-        collapsedIconColor: Colors.black54,
+
+
         children: [
           Text(
             answer,
             style: const TextStyle(
               fontSize: 15,
               height: 1.5,
-              color: Colors.black87,
+
             ),
           ),
         ],

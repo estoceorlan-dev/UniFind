@@ -33,10 +33,8 @@ class _TapNotifPageState extends State<TapNotifPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 193, 193, 193),
       appBar: AppBar(
         title: const Text('Post'),
-        backgroundColor: Colors.grey[800],
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: _getPostData(),

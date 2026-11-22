@@ -6,11 +6,11 @@ class UserGuide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 201, 201, 201),
-        foregroundColor: Colors.black87,
+
+
         title: const Text(
           'User Guide',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -29,7 +29,7 @@ class UserGuide extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -46,7 +46,7 @@ class UserGuide extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+
                       ),
                     ),
                     SizedBox(height: 10),
@@ -55,7 +55,7 @@ class UserGuide extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black54,
+
                       ),
                     ),
                   ],
@@ -66,7 +66,7 @@ class UserGuide extends StatelessWidget {
             const SizedBox(height: 25),
 
 
-            _guideItem(
+            _guideItem(context,
               title: "How to message other users",
               steps: [
                 {
@@ -102,7 +102,7 @@ class UserGuide extends StatelessWidget {
               ],
             ),
 
-            _guideItem(
+            _guideItem(context,
               title: "How to Post and \nreport lost and found item",
               steps: [
                 {
@@ -132,7 +132,7 @@ class UserGuide extends StatelessWidget {
               ],
             ),
 
-            _guideItem(
+            _guideItem(context,
               title: "How to contact or \nmessage the admin",
               steps: [
                 {
@@ -150,7 +150,7 @@ class UserGuide extends StatelessWidget {
               ],
             ),
 
-            _guideItem(
+            _guideItem(context,
               title: "How to edit  profile",
               steps: [
                 {
@@ -182,14 +182,14 @@ class UserGuide extends StatelessWidget {
 
 
 
-  Widget _guideItem({
+  Widget _guideItem(BuildContext context, {
     required String title,
     required List<Map<String, String>> steps,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -212,14 +212,12 @@ class UserGuide extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
+
               ),
             ),
           ],
         ),
 
-        iconColor: Colors.black54,
-        collapsedIconColor: Colors.black54,
 
         children: steps.map((stepData) {
           final imagePath = stepData["img"];
@@ -238,7 +236,7 @@ class UserGuide extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+
                     ),
                   ),
                 ],
@@ -252,7 +250,7 @@ class UserGuide extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 15,
                   height: 1.5,
-                  color: Colors.black87,
+
                 ),
               ),
 
@@ -276,7 +274,7 @@ class UserGuide extends StatelessWidget {
                     ? const Center(
                         child: Text(
                           "No image added",
-                          style: TextStyle(color: Colors.black54),
+                          style: TextStyle(),
                         ),
                       )
                     : null,

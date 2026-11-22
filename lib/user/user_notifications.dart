@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets/user_bottom_nav.dart';
@@ -30,20 +32,17 @@ class _UserNotificationsState extends State<UserNotifications> {
           .doc(widget.username)
           .snapshots();
     });
-
   }
 
   /// 🔎 Filter only relevant notifications (exclude messages and reports)
   bool _isRelevant(Map<String, dynamic> notif) {
-  final title = (notif['title'] ?? '').toString().toLowerCase();
-  final extra = notif['extraData'] ?? {};
-  final isReport = title.contains("report") || extra['reportType'] != null;
+    final title = (notif['title'] ?? '').toString().toLowerCase();
+    final extra = notif['extraData'] ?? {};
+    final isReport = title.contains("report") || extra['reportType'] != null;
 
-  if (title.contains("message")) 
-  if (isReport) return false;
-  return true;
-}
-
+    if (title.contains("message")) if (isReport) return false;
+    return true;
+  }
 
   void _handleNotificationTap(Map<String, dynamic> notif) {
     final data = notif['extraData'] ?? {};
@@ -55,16 +54,14 @@ class _UserNotificationsState extends State<UserNotifications> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => TapNotifPage(
-            currentUser: widget.username,
-            postId: postId,
-          ),
+          builder: (_) =>
+              TapNotifPage(currentUser: widget.username, postId: postId),
         ),
       );
       return;
     }
 
-    if (data.containsKey('commentId') && commentId != null && postId != null ) {
+    if (data.containsKey('commentId') && commentId != null && postId != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -78,6 +75,7 @@ class _UserNotificationsState extends State<UserNotifications> {
       return;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     // Firestore collection reference for notifications
@@ -87,30 +85,36 @@ class _UserNotificationsState extends State<UserNotifications> {
         .collection('notifications')
         .orderBy('createdAt', descending: true);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F9FC),
-      appBar: UserAppBar(
-        username: widget.username,
-        userStream: _userStream,
-      ),
+    return CampusScaffold(
+      appBar: UserAppBar(username: widget.username, userStream: _userStream),
       body: StreamBuilder<QuerySnapshot>(
         stream: notifCollection.snapshots(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Could not load notifications. Please try again later.",
+              ),
+            );
+          }
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingSkeleton();
           }
 
-          final notifications = snapshot.data!.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            data['id'] = doc.id;
-            return data;
-          }).where(_isRelevant).toList();
+          final notifications = snapshot.data!.docs
+              .map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                data['id'] = doc.id;
+                return data;
+              })
+              .where(_isRelevant)
+              .toList();
 
           if (notifications.isEmpty) {
             return const Center(
               child: Text(
                 "No notifications yet 📭",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16),
               ),
             );
           }
@@ -145,7 +149,8 @@ class _UserNotificationsState extends State<UserNotifications> {
                     builder: (context) => AlertDialog(
                       title: const Text("Delete Notification"),
                       content: const Text(
-                          "Are you sure you want to delete this notification?"),
+                        "Are you sure you want to delete this notification?",
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
@@ -176,23 +181,31 @@ class _UserNotificationsState extends State<UserNotifications> {
                   }
                 },
                 child: Card(
-                  color: isRead ? Colors.white : Colors.blue[50],
+                  color: isRead
+                      ? Theme.of(context).colorScheme.surface
+                      : Theme.of(context).colorScheme.secondaryContainer,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   margin: const EdgeInsets.symmetric(vertical: 6),
                   child: ListTile(
+                    textColor: isRead
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.onSecondaryContainer,
                     leading: Icon(
                       _getIconForTitle(displayText),
-                      color: isRead ? Colors.grey : Colors.blueAccent,
+                      color: isRead
+                          ? Theme.of(context).colorScheme.onSurfaceVariant
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
                       size: 30,
                     ),
                     title: Text(
                       displayText,
                       style: TextStyle(
-                        fontWeight:
-                            isRead ? FontWeight.normal : FontWeight.bold,
+                        fontWeight: isRead
+                            ? FontWeight.normal
+                            : FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
@@ -200,9 +213,13 @@ class _UserNotificationsState extends State<UserNotifications> {
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         "$body\n$createdAt",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
-                          color: Colors.grey,
+                          color: isRead
+                              ? Theme.of(context).colorScheme.onSurfaceVariant
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                           height: 1.3,
                         ),
                       ),
@@ -215,10 +232,7 @@ class _UserNotificationsState extends State<UserNotifications> {
           );
         },
       ),
-      bottomNavigationBar: UserBottomNav(
-        currentIndex: 2,
-        username: widget.username,
-      ),
+      navigation: UserBottomNav(currentIndex: 2, username: widget.username),
     );
   }
 

@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/admin_bottom_nav.dart';
@@ -18,8 +20,7 @@ class _AdminUsersState extends State<AdminUsers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFE0F7FA),
+    return CampusScaffold(
       appBar: const AdminAppBar(),
       body: Column(
         children: [
@@ -44,8 +45,8 @@ class _AdminUsersState extends State<AdminUsers> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -74,14 +75,14 @@ class _AdminUsersState extends State<AdminUsers> {
                         top: 6,
                         child: Container(
                           padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.error,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
                             pendingCount.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onError,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
@@ -105,9 +106,9 @@ class _AdminUsersState extends State<AdminUsers> {
               },
               decoration: InputDecoration(
                 hintText: "Search users...",
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                prefixIcon: const Icon(Icons.search),
                 filled: true,
-                fillColor: Colors.white,
+
                 contentPadding: const EdgeInsets.symmetric(vertical: 0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -126,8 +127,11 @@ class _AdminUsersState extends State<AdminUsers> {
                   .where('isVerified', isEqualTo: true)
                   .snapshots(),
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Could not load users. Please try again later."));
+                }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LoadingSkeleton();
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return const Center(child: Text("No verified users found."));
@@ -245,7 +249,7 @@ class _AdminUsersState extends State<AdminUsers> {
           ),
         ],
       ),
-      bottomNavigationBar:
+      navigation:
           AdminBottomNav(currentIndex: 4),
     );
   }

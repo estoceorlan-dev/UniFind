@@ -70,10 +70,8 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       appBar: AppBar(
         title: const Text("My Profile"),
-        backgroundColor: const Color.fromARGB(255, 120, 120, 120),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -129,7 +127,7 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     elevation: 6,
                     shadowColor: Colors.grey.withOpacity(0.25),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 22, vertical: 32),
@@ -247,7 +245,7 @@ class _UserProfileState extends State<UserProfile> {
                   child: Text(
                     "My Posts",
                     style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black54), 
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
 

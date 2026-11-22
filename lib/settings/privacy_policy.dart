@@ -11,7 +11,7 @@ class PrivacyPolicy extends StatelessWidget {
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w700,
-          color: Colors.black,
+
         ),
       ),
     );
@@ -19,7 +19,7 @@ class PrivacyPolicy extends StatelessWidget {
 
   Widget divider() {
     return const Divider(
-      color: Colors.black26,
+
       thickness: 1,
       height: 20,
     );
@@ -28,11 +28,11 @@ class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         title: const Text('Privacy Policy'),
-        backgroundColor: const Color.fromARGB(255, 201, 201, 201),
-        foregroundColor: Colors.black87,
+
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -57,7 +57,7 @@ class PrivacyPolicy extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+
                       ),
                     ),
                   ),

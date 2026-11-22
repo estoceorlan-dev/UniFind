@@ -67,11 +67,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
         title: const Text("Edit Post"),
-        backgroundColor: const Color.fromARGB(255, 142, 142, 142),
-        foregroundColor: Colors.black,
+
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
@@ -85,7 +83,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     width: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text("Save", style: TextStyle(color: Colors.white)),
+                : const Text("Save"),
           ),
         ],
       ),

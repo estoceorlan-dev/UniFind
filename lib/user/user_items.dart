@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/feed.dart';
@@ -39,30 +41,11 @@ class _UserItemsState extends State<UserItems> {
         .where("typeKey", isEqualTo: "found item")
         .get();
 
+    if (!mounted) return;
     setState(() {
       lostCount = lostSnapshot.docs.length;
       foundCount = foundSnapshot.docs.length;
     });
-  }
-
-  Widget _buildTypeButton(String label, String typeKey, int count) {
-    final isSelected = selectedType == typeKey;
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          selectedType = typeKey;
-          _tagQuery = "";
-          _tagCtrl.clear();
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? Colors.cyan : Colors.white,
-        foregroundColor: isSelected ? Colors.white : Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-      child: Text("$label ($count)"),
-    );
   }
 
   Future<void> _refresh() async {
@@ -71,8 +54,7 @@ class _UserItemsState extends State<UserItems> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFE9FFFF),
+    return CampusScaffold(
       appBar: UserAppBar(
         username: widget.username,
         userStream: FirebaseFirestore.instance
@@ -87,13 +69,26 @@ class _UserItemsState extends State<UserItems> {
             // Tabs with counts
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildTypeButton("Lost Items", "lost item", lostCount),
-                  const SizedBox(width: 12),
-                  _buildTypeButton("Found Items", "found item", foundCount),
+              child: SegmentedButton<String>(
+                segments: [
+                  ButtonSegment(
+                    value: 'lost item',
+                    label: Text('Lost ($lostCount)'),
+                    icon: const Icon(Icons.search),
+                  ),
+                  ButtonSegment(
+                    value: 'found item',
+                    label: Text('Found ($foundCount)'),
+                    icon: const Icon(Icons.inventory_2_outlined),
+                  ),
                 ],
+                selected: {selectedType},
+                showSelectedIcon: false,
+                onSelectionChanged: (selection) => setState(() {
+                  selectedType = selection.single;
+                  _tagQuery = '';
+                  _tagCtrl.clear();
+                }),
               ),
             ),
 
@@ -117,7 +112,7 @@ class _UserItemsState extends State<UserItems> {
                         )
                       : null,
                   filled: true,
-                  fillColor: Colors.white,
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -139,17 +134,19 @@ class _UserItemsState extends State<UserItems> {
                     .orderBy("createdAt", descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(
+                        "Could not load items. Please try again later.",
+                      ),
+                    );
+                  }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const LoadingSkeleton(posts: true);
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "No posts found.",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    );
+                    return const Center(child: Text("No posts found."));
                   }
 
                   // ✅ Filter locally
@@ -157,34 +154,32 @@ class _UserItemsState extends State<UserItems> {
                     final data = doc.data();
                     final typeMatches = data["typeKey"] == selectedType;
 
-                   bool tagMatches = true;
-if (_isTagSearch()) {
-  final rawTags = data["tags"];
+                    bool tagMatches = true;
+                    if (_isTagSearch()) {
+                      final rawTags = data["tags"];
 
-  final tags = rawTags is List
-      ? rawTags.map((e) => e.toString().toLowerCase()).toList()
-      : rawTags is String
-          ? rawTags
-              .toLowerCase()
-              .split(",")
-              .map((t) => t.trim())
-              .toList()
-          : <String>[];
+                      final tags = rawTags is List
+                          ? rawTags
+                                .map((e) => e.toString().toLowerCase())
+                                .toList()
+                          : rawTags is String
+                          ? rawTags
+                                .toLowerCase()
+                                .split(",")
+                                .map((t) => t.trim())
+                                .toList()
+                          : <String>[];
 
-  tagMatches = tags.any(
-    (tag) => tag.contains(_tagQuery.replaceFirst("#", "")),
-  );
-}
+                      tagMatches = tags.any(
+                        (tag) => tag.contains(_tagQuery.replaceFirst("#", "")),
+                      );
+                    }
                     return typeMatches && tagMatches;
                   }).toList();
 
-                  
                   if (posts.isEmpty) {
                     return const Center(
-                      child: Text(
-                        "No posts match your filter.",
-                        style: TextStyle(color: Colors.grey),
-                      ),
+                      child: Text("No posts match your filter."),
                     );
                   }
 
@@ -229,10 +224,7 @@ if (_isTagSearch()) {
           ],
         ),
       ),
-      bottomNavigationBar: UserBottomNav(
-        currentIndex: 3,
-        username: widget.username,
-      ),
+      navigation: UserBottomNav(currentIndex: 3, username: widget.username),
     );
   }
 }

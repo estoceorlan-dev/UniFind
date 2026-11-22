@@ -6,11 +6,11 @@ class AboutUniFind extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 201, 201, 201),
-        foregroundColor: Colors.black87,
+
+
         title: const Text(
           'About UniFind',
           style: TextStyle(
@@ -32,7 +32,7 @@ class AboutUniFind extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -50,7 +50,7 @@ class AboutUniFind extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+
                     ),
                   ),
                   SizedBox(height: 8),
@@ -58,7 +58,7 @@ class AboutUniFind extends StatelessWidget {
                     "Your Campus Companion",
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.black54,
+
                     ),
                   ),
                 ],
@@ -71,7 +71,7 @@ class AboutUniFind extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -91,7 +91,7 @@ The goal of UniFind is to improve communication inside BCC and provide a quick, 
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.5,
-                  color: Color.fromARGB(221, 0, 0, 0),
+
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'core/theme/appearance.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app.dart';
@@ -10,5 +11,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await restoreAppearance();
   runApp(const UniFindApp());
 }

@@ -1,3 +1,4 @@
+import '../widgets/campus_scaffold.dart';
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,8 +23,8 @@ class _AdminNewsFeedState extends State<AdminNewsFeed> {
   final UserRepository _userRepository = UserRepository();
   final GlobalKey<FeedState> _feedKey = GlobalKey<FeedState>();
 
-  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _adminSubscription;
-  bool _isRefreshing = false;
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>?
+  _adminSubscription;
 
   @override
   void initState() {
@@ -38,42 +39,37 @@ class _AdminNewsFeedState extends State<AdminNewsFeed> {
   }
 
   Future<void> _refreshFeed() async {
-    setState(() => _isRefreshing = true);
     await _feedKey.currentState?.reloadPosts();
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    if (mounted) {
-      setState(() => _isRefreshing = false);
-    }
   }
 
   Widget _getPageContent(int index) {
     switch (index) {
       case 0:
-        return Stack(
-          children: [
-            RefreshIndicator(
-              onRefresh: _refreshFeed,
-              child: Feed(
-                key: _feedKey,
-                currentUser: _username,
-              ),
-            ),
-            if (_isRefreshing)
-              Container(
-                color: Colors.black.withValues(alpha: 0.1),
-                child: const Center(
-                  child: SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 760),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 8),
+                  child: Text(
+                    'Campus feed',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -1,
                     ),
                   ),
                 ),
-              ),
-          ],
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: _refreshFeed,
+                    child: Feed(key: _feedKey, currentUser: _username),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       case 1:
         return const Center(child: Text('Chats Section (Coming Soon)'));
@@ -90,15 +86,14 @@ class _AdminNewsFeedState extends State<AdminNewsFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 225, 225, 225),
+    return CampusScaffold(
       appBar: const AdminAppBar(),
       body: SafeArea(child: _getPageContent(_currentIndex)),
-      bottomNavigationBar: AdminBottomNav(currentIndex: _currentIndex),
+      navigation: AdminBottomNav(currentIndex: _currentIndex),
       floatingActionButton: _currentIndex == 0
           ? PostComposer(username: _username)
           : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
     );
   }
 }

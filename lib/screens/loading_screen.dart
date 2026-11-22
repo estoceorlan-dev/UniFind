@@ -53,18 +53,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
       return;
     }
 
-    await Future.delayed(const Duration(seconds: 5));
-    if (!mounted) return;
-
-    final retryResults = await Connectivity().checkConnectivity();
-    if (retryResults.contains(ConnectivityResult.none)) {
-      setState(() {
-        _hasConnection = false;
-        _isChecking = false;
-      });
-      return;
-    }
-
     final prefs = await SharedPreferences.getInstance();
     final savedUser = prefs.getString('username');
     final role = prefs.getString('role');
@@ -145,31 +133,30 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Widget _buildSplash() {
     return Scaffold(
-      backgroundColor: const Color(0xFFE0F7FA),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Hero(
-              tag: 'logo',
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/logo2.jpg',
-                  width: 160,
-                  height: 160,
-                  fit: BoxFit.cover,
-                ),
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Icon(
+                Icons.travel_explore_rounded,
+                size: 44,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
-            const SizedBox(height: 24),
-            const CircularProgressIndicator(),
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('Loading...'),
+            const SizedBox(height: 16),
+            Text(
+              'UniFind',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 100),
-              child: Text('Copyright 2025 UniFind. All rights reserved.'),
+            const SizedBox(height: 18),
+            const SizedBox(
+              width: 100,
+              child: LinearProgressIndicator(semanticsLabel: 'Opening UniFind'),
             ),
           ],
         ),

@@ -6,7 +6,6 @@ import '../admin/admin_profile.dart';
 import '../admin/admin_settings.dart';
 import '../screens/search.dart';
 import '../admin/admin_newsfeed.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
   const AdminAppBar({super.key});
@@ -52,9 +51,7 @@ class _AdminAppBarState extends State<AdminAppBar> {
             child: const Text("Cancel"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-            ),
+            style: ElevatedButton.styleFrom(),
             onPressed: () => Navigator.pop(context, true),
             child: const Text("Yes"),
           ),
@@ -83,52 +80,50 @@ class _AdminAppBarState extends State<AdminAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       elevation: 0,
       automaticallyImplyLeading: false,
-      title: Row(
-        children:  [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => AdminNewsFeed(),
-                ),
-              );
-            },
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo2.jpg'),
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => AdminNewsFeed(),
-                ),
-              );
-            },
-            child: Text(
-            "UniFind",
-            style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Color.fromARGB(255, 5, 12, 72),
+      title: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminNewsFeed()),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Icon(
+                Icons.travel_explore_rounded,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
-          ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            const Flexible(
+              child: Text(
+                'UniFind',
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -.8,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search, color: Color.fromARGB(255, 12, 12, 12)),
-         onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => Search(username: username ?? "admin")));
-            },
+          tooltip: "Search",
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => Search(username: username ?? "admin"),
+              ),
+            );
+          },
         ),
         const SizedBox(width: 8),
         if (_adminStream != null)
@@ -144,21 +139,14 @@ class _AdminAppBarState extends State<AdminAppBar> {
 
               return Row(
                 children: [
-                  Text(
-                    displayName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   PopupMenuButton<String>(
+                    tooltip: "Account menu for $displayName",
                     offset: const Offset(0, 50),
                     child: CircleAvatar(
                       backgroundImage: (profilePic.isNotEmpty)
                           ? NetworkImage(profilePic)
                           : const AssetImage('assets/images/defaultpfp.jpg')
-                              as ImageProvider,
+                                as ImageProvider,
                     ),
                     onSelected: (value) {
                       if (value == 'logout') {
@@ -167,16 +155,16 @@ class _AdminAppBarState extends State<AdminAppBar> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => AdminProfile(
-                              username: username ?? "admin",
-                            ),
+                            builder: (_) =>
+                                AdminProfile(username: username ?? "admin"),
                           ),
                         );
                       } else if (value == 'settings') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const AdminSettings()),
+                            builder: (_) => const AdminSettings(),
+                          ),
                         );
                       }
                     },

@@ -135,10 +135,8 @@ class _EditAdminProfileState extends State<EditAdminProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       appBar: AppBar(
         title: const Text("Edit Admin Profile"),
-        backgroundColor: const Color.fromARGB(255, 120, 120, 120),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -174,7 +172,7 @@ class _EditAdminProfileState extends State<EditAdminProfile> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 elevation: 4,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -217,7 +215,6 @@ class _EditAdminProfileState extends State<EditAdminProfile> {
                           "ℹ️ Do not change or just directly skip a field if you want to keep it the same.",
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.black54,
                             fontStyle: FontStyle.italic,
                           ),
                           textAlign: TextAlign.center,

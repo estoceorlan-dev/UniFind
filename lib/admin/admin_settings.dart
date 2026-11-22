@@ -1,3 +1,4 @@
+import '../core/theme/appearance.dart';
 import 'package:flutter/material.dart';
 import '../settings/about_uni_find.dart';
 import '../settings/admin_manual.dart';
@@ -17,10 +18,9 @@ class AdminSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 186, 187, 187),
       appBar: AppBar(
+        actions: const [AppearanceMenu()],
         title: const Text("Settings"),
-        backgroundColor: const Color.fromARGB(255, 38, 38, 38),
         elevation: 0,
       ),
       body: ListView(
@@ -126,7 +126,7 @@ class AdminSettings extends StatelessWidget {
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 23, 21, 21),
+
         ),
       ),
     );
@@ -141,7 +141,7 @@ class AdminSettings extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: ListTile(
-        leading: Icon(icon, color: Colors.black87),
+        leading: Icon(icon),
         title: Text(
           title,
           style: const TextStyle(

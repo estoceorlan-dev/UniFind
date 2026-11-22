@@ -96,12 +96,11 @@ class _ConvoPageState extends State<ConvoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FFFF),
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Colors.white,
+
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: FutureBuilder<DocumentSnapshot>(
@@ -119,7 +118,7 @@ class _ConvoPageState extends State<ConvoPage> {
                   ),
                   SizedBox(width: 8),
                   Text("Loading...",
-                      style: TextStyle(color: Colors.black54, fontSize: 16)),
+                      style: TextStyle(fontSize: 16)),
                 ],
               );
             }
@@ -134,7 +133,6 @@ class _ConvoPageState extends State<ConvoPage> {
                   const SizedBox(width: 8),
                   Text(widget.otherUsername,
                       style: const TextStyle(
-                          color: Colors.black87,
                           fontWeight: FontWeight.w600,
                           fontSize: 16)),
                 ],
@@ -161,13 +159,12 @@ class _ConvoPageState extends State<ConvoPage> {
                         ? NetworkImage(profilePicUrl)
                         : const AssetImage('assets/images/defaultpfp.jpg')
                             as ImageProvider,
-                    backgroundColor: Colors.grey.shade200,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     widget.otherUsername,
                     style: const TextStyle(
-                      color: Colors.black87,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
@@ -254,7 +251,7 @@ class _ConvoPageState extends State<ConvoPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey.shade300),
                     ),
@@ -268,7 +265,6 @@ class _ConvoPageState extends State<ConvoPage> {
                                 'Replying to ${_replyToSender ?? ''}',
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  color: Colors.black54,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -376,7 +372,7 @@ class MessageBubble extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     sender,
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -389,7 +385,7 @@ class MessageBubble extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                 decoration: BoxDecoration(
-                  color: isMe ? Colors.blueAccent : Colors.grey.shade300,
+                  color: isMe ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.only(
                     topLeft: const Radius.circular(16),
                     topRight: const Radius.circular(16),
@@ -406,7 +402,7 @@ class MessageBubble extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                         decoration: BoxDecoration(
-                          color: isMe ? Colors.blue.shade700.withOpacity(0.2) : Colors.grey.shade200,
+                          color: isMe ? Colors.blue.shade700.withOpacity(0.2) : Theme.of(context).colorScheme.surfaceContainerHigh,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
@@ -416,7 +412,7 @@ class MessageBubble extends StatelessWidget {
                               replyToSender ?? '',
                               style: TextStyle(
                                 fontSize: 11,
-                                color: isMe ? Colors.white70 : Colors.black54,
+                                color: isMe ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -427,7 +423,7 @@ class MessageBubble extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: isMe ? Colors.white70 : Colors.black87,
+                                color: isMe ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -440,7 +436,7 @@ class MessageBubble extends StatelessWidget {
                     Text(
                       text,
                       style: TextStyle(
-                        color: isMe ? Colors.white : Colors.black87,
+                        color: isMe ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
                         fontSize: 15,
                       ),
                     ),
@@ -458,7 +454,7 @@ class MessageBubble extends StatelessWidget {
                                 ? formatTime!(timestamp!)
                                 : "${timestamp!.hour.toString().padLeft(2, '0')}:${timestamp!.minute.toString().padLeft(2, '0')}",
                             style: TextStyle(
-                              color: isMe ? Colors.white70 : Colors.black54,
+                              color: isMe ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 10,
                             ),
                           ),
@@ -468,7 +464,7 @@ class MessageBubble extends StatelessWidget {
                             status!,
                             style: TextStyle(
                               fontSize: 10,
-                              color: isMe ? Colors.white70 : Colors.black54,
+                              color: isMe ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -500,8 +496,8 @@ class MessageInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           top: BorderSide(color: Colors.black12),
         ),
@@ -514,7 +510,7 @@ class MessageInput extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: "Type a message...",
                 filled: true,
-                fillColor: Colors.grey.shade100,
+                fillColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 border: OutlineInputBorder(

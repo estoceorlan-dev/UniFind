@@ -90,9 +90,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<String> uploadFile(File file, String folder, String username) async {
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('$folder/$username-${DateTime.now().millisecondsSinceEpoch}');
+    final ref = FirebaseStorage.instance.ref().child(
+      '$folder/$username-${DateTime.now().millisecondsSinceEpoch}',
+    );
     await ref.putFile(file);
     return ref.getDownloadURL();
   }
@@ -111,8 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             controller: scrollController,
-            child: const Text(
-              '''Terms and Conditions of Use
+            child: const Text('''Terms and Conditions of Use
 
 Effective Date: Testing Date
 Application: UniFind - Lost & Found Platform for Buenavista Community College (BCC)
@@ -156,9 +155,7 @@ Users may not impersonate others, submit fake credentials, harass other users, o
 10. Updates to Terms
 
 UniFind may update these terms over time. Continued use means you accept the latest version.
-''',
-              style: TextStyle(fontSize: 14, color: Colors.black87, height: 1.4),
-            ),
+''', style: TextStyle(fontSize: 14, height: 1.4)),
           ),
         ),
       ),
@@ -186,7 +183,8 @@ UniFind may update these terms over time. Continued use means you accept the lat
         schoolIdFrontPhoto == null ||
         schoolIdBackPhoto == null) {
       _showMessage(
-        message: 'Please fill all required fields and upload your school ID photo',
+        message:
+            'Please fill all required fields and upload your school ID photo',
         icon: Icons.warning,
       );
       return;
@@ -311,10 +309,13 @@ UniFind may update these terms over time. Continued use means you accept the lat
       obscureText: isPassword,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: uniFindPrimary),
+        prefixIcon: Icon(icon),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: uniFindPrimary, width: 2),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
@@ -324,260 +325,254 @@ UniFind may update these terms over time. Continued use means you accept the lat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE0F7FA),
+      appBar: AppBar(title: const Text("Create account")),
       body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/logo2.jpg',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.cover,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 520),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 8,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => pickImage('profile'),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: lightpurple.withValues(alpha: 0.3),
-                          backgroundImage:
-                              profilePic != null ? FileImage(profilePic!) : null,
-                          child: profilePic == null
-                              ? const Icon(
-                                  Icons.camera_alt,
-                                  size: 40,
-                                  color: uniFindPrimary,
-                                )
-                              : null,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Upload a profile picture (optional)',
-                        style: TextStyle(fontSize: 14, color: uniFindGrey),
-                      ),
-                      const SizedBox(height: 20),
-                      const Row(
-                        children: [
-                          Icon(Icons.warning, color: Colors.red, size: 20),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Please ensure that the information provided is accurate for verification purposes.',
-                              style: TextStyle(fontSize: 12, color: uniFindGrey),
-                            ),
-                          ),
-                        ],
-                      ),
-                      _buildTextField(emailController, 'Email', Icons.email),
-                      const SizedBox(height: 15),
-                      _buildTextField(firstNameController, 'First Name', Icons.person),
-                      const SizedBox(height: 15),
-                      _buildTextField(
-                        lastNameController,
-                        'Last Name',
-                        Icons.person_outline,
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField<String>(
-                        initialValue: selectedGender,
-                        decoration: InputDecoration(
-                          labelText: 'Gender',
-                          prefixIcon: const Icon(Icons.wc, color: uniFindPrimary),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                  elevation: 0,
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () => pickImage('profile'),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: lightpurple.withValues(alpha: 0.3),
+                            backgroundImage: profilePic != null
+                                ? FileImage(profilePic!)
+                                : null,
+                            child: profilePic == null
+                                ? const Icon(Icons.camera_alt, size: 40)
+                                : null,
                           ),
                         ),
-                        items: genderOptions
-                            .map(
-                              (gender) => DropdownMenuItem(
-                                value: gender,
-                                child: Text(gender),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) => setState(() => selectedGender = value),
-                      ),
-                      const SizedBox(height: 15),
-                      _buildTextField(
-                        usernameController,
-                        'Username',
-                        Icons.account_circle,
-                      ),
-                      const SizedBox(height: 15),
-                      _buildTextField(
-                        passwordController,
-                        'Password',
-                        Icons.lock,
-                        isPassword: true,
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField<String>(
-                        initialValue: selectedCourse,
-                        decoration: InputDecoration(
-                          labelText: 'Course',
-                          prefixIcon: const Icon(Icons.school, color: uniFindPrimary),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        items: courseOptions
-                            .map(
-                              (course) => DropdownMenuItem(
-                                value: course,
-                                child: Text(course),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) => setState(() => selectedCourse = value),
-                      ),
-                      const SizedBox(height: 15),
-                      _buildTextField(
-                        schoolIdController,
-                        'School ID Number',
-                        Icons.badge,
-                      ),
-                      const SizedBox(height: 15),
-                      ElevatedButton.icon(
-                        onPressed: () => pickImage('front'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: uniFindAccent,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        icon: const Icon(Icons.upload_file),
-                        label: Text(
-                          schoolIdFrontPhoto == null
-                              ? 'Upload School ID Front'
-                              : 'Change School ID Front',
-                        ),
-                      ),
-                      if (schoolIdFrontPhoto != null) ...[
                         const SizedBox(height: 10),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.file(schoolIdFrontPhoto!, height: 120),
+                        const Text(
+                          'Upload a profile picture (optional)',
+                          style: TextStyle(fontSize: 14),
                         ),
-                      ],
-                      const SizedBox(height: 15),
-                      ElevatedButton.icon(
-                        onPressed: () => pickImage('back'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: uniFindAccent,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        icon: const Icon(Icons.upload_file),
-                        label: Text(
-                          schoolIdBackPhoto == null
-                              ? 'Upload School ID Back'
-                              : 'Change School ID Back',
-                        ),
-                      ),
-                      if (schoolIdBackPhoto != null) ...[
-                        const SizedBox(height: 10),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.file(schoolIdBackPhoto!, height: 120),
-                        ),
-                      ],
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: agreedToTerms,
-                            onChanged: (value) {
-                              setState(() => agreedToTerms = value ?? false);
-                            },
-                            activeColor: uniFindPrimary,
-                          ),
-                          const Expanded(
-                            child: Text('I agree to the Terms and Conditions'),
-                          ),
-                          TextButton(
-                            onPressed: _showTermsAndConditions,
-                            child: const Text(
-                              'View',
-                              style: TextStyle(
-                                color: uniFindPrimary,
-                                fontWeight: FontWeight.bold,
+                        const SizedBox(height: 20),
+                        const Row(
+                          children: [
+                            Icon(Icons.warning, color: Colors.red, size: 20),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Please ensure that the information provided is accurate for verification purposes.',
+                                style: TextStyle(fontSize: 12),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: uniFindPrimary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          ],
                         ),
-                        onPressed: (agreedToTerms && !isLoading)
-                            ? handleSignUp
-                            : null,
-                        child: isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text(
-                                'Create Account',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Already have an account? '),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const LoginScreen(),
+                        _buildTextField(emailController, 'Email', Icons.email),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                          firstNameController,
+                          'First Name',
+                          Icons.person,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                          lastNameController,
+                          'Last Name',
+                          Icons.person_outline,
+                        ),
+                        const SizedBox(height: 15),
+                        DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          initialValue: selectedGender,
+                          decoration: InputDecoration(
+                            labelText: 'Gender',
+                            prefixIcon: const Icon(Icons.wc),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          items: genderOptions
+                              .map(
+                                (gender) => DropdownMenuItem(
+                                  value: gender,
+                                  child: Text(gender),
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'Log In',
-                              style: TextStyle(
-                                color: uniFindPrimary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              )
+                              .toList(),
+                          onChanged: (value) =>
+                              setState(() => selectedGender = value),
+                        ),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                          usernameController,
+                          'Username',
+                          Icons.account_circle,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                          passwordController,
+                          'Password',
+                          Icons.lock,
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 15),
+                        DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          initialValue: selectedCourse,
+                          decoration: InputDecoration(
+                            labelText: 'Course',
+                            prefixIcon: const Icon(Icons.school),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                          items: courseOptions
+                              .map(
+                                (course) => DropdownMenuItem(
+                                  value: course,
+                                  child: Text(course),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) =>
+                              setState(() => selectedCourse = value),
+                        ),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                          schoolIdController,
+                          'School ID Number',
+                          Icons.badge,
+                        ),
+                        const SizedBox(height: 15),
+                        ElevatedButton.icon(
+                          onPressed: () => pickImage('front'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: uniFindAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.upload_file),
+                          label: Text(
+                            schoolIdFrontPhoto == null
+                                ? 'Upload School ID Front'
+                                : 'Change School ID Front',
+                          ),
+                        ),
+                        if (schoolIdFrontPhoto != null) ...[
+                          const SizedBox(height: 10),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(schoolIdFrontPhoto!, height: 120),
+                          ),
                         ],
-                      ),
-                    ],
+                        const SizedBox(height: 15),
+                        ElevatedButton.icon(
+                          onPressed: () => pickImage('back'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: uniFindAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.upload_file),
+                          label: Text(
+                            schoolIdBackPhoto == null
+                                ? 'Upload School ID Back'
+                                : 'Change School ID Back',
+                          ),
+                        ),
+                        if (schoolIdBackPhoto != null) ...[
+                          const SizedBox(height: 10),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(schoolIdBackPhoto!, height: 120),
+                          ),
+                        ],
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: agreedToTerms,
+                              onChanged: (value) {
+                                setState(() => agreedToTerms = value ?? false);
+                              },
+                              activeColor: uniFindPrimary,
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'I agree to the Terms and Conditions',
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: _showTermsAndConditions,
+                              child: const Text(
+                                'View',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: uniFindPrimary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            minimumSize: const Size.fromHeight(50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: (agreedToTerms && !isLoading)
+                              ? handleSignUp
+                              : null,
+                          child: isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  'Create Account',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                        ),
+                        const SizedBox(height: 15),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            const Text('Already have an account? '),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LoginScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Log In',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 40),
-            ],
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),

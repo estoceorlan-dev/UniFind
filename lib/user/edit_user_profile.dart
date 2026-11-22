@@ -143,14 +143,12 @@ class _EditUserProfileState extends State<EditUserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text("Edit Profile"),
-        backgroundColor: const Color.fromARGB(255, 120, 120, 120),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
@@ -239,7 +237,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                           "ℹ️ Do not change or skip a field if you want to keep it the same.",
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.black54,
                             fontStyle: FontStyle.italic,
                           ),
                           textAlign: TextAlign.center,

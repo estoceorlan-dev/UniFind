@@ -199,9 +199,7 @@ class _UserProfile2State extends State<UserProfile2> {
     final isAdmin = _username == "admin"; 
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 120, 120, 120),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -272,7 +270,7 @@ class _UserProfile2State extends State<UserProfile2> {
                   ),
                   elevation: 6,
                   shadowColor: Colors.grey.withOpacity(0.25),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 22, vertical: 32),
@@ -402,7 +400,8 @@ class _UserProfile2State extends State<UserProfile2> {
         icon: const Icon(Icons.delete),
         label: const Text("Remove User"),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 220, 220, 220),
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -419,7 +418,8 @@ class _UserProfile2State extends State<UserProfile2> {
         icon: const Icon(Icons.flag),
         label: const Text("Report"),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 37, 29, 29),
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

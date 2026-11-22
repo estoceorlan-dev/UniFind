@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../screens/login_screen.dart';
 import '../user/user_profile.dart';
 import '../user/user_settings.dart';
@@ -12,11 +11,8 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String username;
   final Stream<DocumentSnapshot<Map<String, dynamic>>>? userStream;
 
-  const UserAppBar({
-    Key? key,
-    required this.username,
-    required this.userStream,
-  }) : super(key: key);
+  const UserAppBar({Key? key, required this.username, required this.userStream})
+    : super(key: key);
 
   Future<void> _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,9 +30,7 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text("Logout"),
         content: const Text("Are you sure you want to log out?"),
         actions: [
@@ -49,10 +43,7 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.of(ctx).pop();
               _logout(context);
             },
-            child: const Text(
-              "Yes",
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text("Yes", style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -62,51 +53,47 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       elevation: 0,
       automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => UserNewsfeed(username: username),
-                ),
-              );
-            },
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo2.jpg'),
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => UserNewsfeed(username: username),
-                ),
-              );
-            },
-            child: Text(
-            "UniFind",
-            style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Color.fromARGB(255, 5, 12, 72),
+      title: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => UserNewsfeed(username: username)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Icon(
+                Icons.travel_explore_rounded,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
-          ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            const Flexible(
+              child: Text(
+                'UniFind',
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -.8,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search, color: Colors.black),
+          tooltip: "Search",
+          icon: const Icon(Icons.search),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => Search(username: username)));
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => Search(username: username)),
+            );
           },
         ),
         const SizedBox(width: 8),
@@ -123,21 +110,14 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               return Row(
                 children: [
-                  Text(
-                    displayName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   PopupMenuButton<String>(
+                    tooltip: "Account menu for $displayName",
                     offset: const Offset(0, 50),
                     child: CircleAvatar(
                       backgroundImage: (profilePic.isNotEmpty)
                           ? NetworkImage(profilePic)
                           : const AssetImage('assets/images/defaultpfp.jpg')
-                              as ImageProvider,
+                                as ImageProvider,
                     ),
                     onSelected: (value) {
                       if (value == "logout") {
@@ -162,7 +142,7 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
                         value: "profile",
                         child: Row(
                           children: [
-                            Icon(Icons.person, color: Colors.black54),
+                            Icon(Icons.person),
                             SizedBox(width: 8),
                             Text("Profile"),
                           ],
@@ -172,7 +152,7 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
                         value: "settings",
                         child: Row(
                           children: [
-                            Icon(Icons.settings, color: Colors.black54),
+                            Icon(Icons.settings),
                             SizedBox(width: 8),
                             Text("Settings"),
                           ],

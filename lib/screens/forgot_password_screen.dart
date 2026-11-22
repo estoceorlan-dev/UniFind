@@ -169,14 +169,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: const Text(
           'Forgot Password',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromARGB(255, 39, 44, 53),
-        foregroundColor: Colors.white,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -210,7 +207,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 const Text(
                   'Enter your username to receive a verification code via your registered email.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                  style: TextStyle(fontSize: 14),
                 ),
               ],
             ),
@@ -237,7 +234,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const Text(
                 "If no email appears in your inbox within a few minutes, please check your Spam or Junk folder.",
                 style: TextStyle(
-                  color: Colors.black54,
                   fontSize: 14,
                   fontStyle: FontStyle.italic,
                 ),

@@ -1,3 +1,5 @@
+import '../widgets/campus_scaffold.dart';
+import '../widgets/loading_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/admin_bottom_nav.dart';
@@ -21,13 +23,11 @@ class _AdminNotificationsState extends State<AdminNotifications> {
     super.initState();
   }
 
-
   bool _isRelevant(Map<String, dynamic> notif) {
-  final title = (notif['title'] ?? '').toString().toLowerCase();
-  if (title.contains("message")) return false;
-  return true; // show everything else
+    final title = (notif['title'] ?? '').toString().toLowerCase();
+    if (title.contains("message")) return false;
+    return true; // show everything else
   }
-
 
   void _handleNotificationTap(Map<String, dynamic> notif) {
     final data = notif['extraData'] ?? {};
@@ -81,8 +81,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
         .collection('notifications')
         .orderBy('createdAt', descending: true);
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 193, 193, 193),
+    return CampusScaffold(
       appBar: const AdminAppBar(),
       body: Column(
         children: [
@@ -117,27 +116,41 @@ class _AdminNotificationsState extends State<AdminNotifications> {
             child: StreamBuilder<QuerySnapshot>(
               stream: notifCollection.snapshots(),
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      "Could not load notifications. Please try again later.",
+                    ),
+                  );
+                }
                 if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LoadingSkeleton();
                 }
 
-                final notifications = snapshot.data!.docs.map((doc) {
-                  final data = doc.data() as Map<String, dynamic>;
-                  data['id'] = doc.id;
-                  return data;
-                }).where(_isRelevant).toList();
+                final notifications = snapshot.data!.docs
+                    .map((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      data['id'] = doc.id;
+                      return data;
+                    })
+                    .where(_isRelevant)
+                    .toList();
 
                 if (notifications.isEmpty) {
                   return const Center(
                     child: Text(
                       "No notifications yet 📭",
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 16),
                     ),
                   );
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 90, left: 10, right: 10),
+                  padding: const EdgeInsets.only(
+                    bottom: 90,
+                    left: 10,
+                    right: 10,
+                  ),
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final notif = notifications[index];
@@ -166,7 +179,8 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                           builder: (context) => AlertDialog(
                             title: const Text("Delete Notification"),
                             content: const Text(
-                                "Are you sure you want to delete this notification?"),
+                              "Are you sure you want to delete this notification?",
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
@@ -196,23 +210,35 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                         }
                       },
                       child: Card(
-                        color: isRead ? Colors.white : Colors.blue[50],
+                        color: isRead
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(context).colorScheme.secondaryContainer,
                         elevation: 2,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: ListTile(
+                          textColor: isRead
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                           leading: Icon(
                             _getIconForTitle(displayText),
-                            color: isRead ? Colors.grey : Colors.blueAccent,
+                            color: isRead
+                                ? Theme.of(context).colorScheme.onSurfaceVariant
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSecondaryContainer,
                             size: 30,
                           ),
                           title: Text(
                             displayText,
                             style: TextStyle(
-                              fontWeight:
-                                  isRead ? FontWeight.normal : FontWeight.bold,
+                              fontWeight: isRead
+                                  ? FontWeight.normal
+                                  : FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
@@ -220,9 +246,15 @@ class _AdminNotificationsState extends State<AdminNotifications> {
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
                               "$body\n$createdAt",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.grey,
+                                color: isRead
+                                    ? Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant
+                                    : Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
                                 height: 1.3,
                               ),
                             ),
@@ -238,7 +270,7 @@ class _AdminNotificationsState extends State<AdminNotifications> {
           ),
         ],
       ),
-      bottomNavigationBar: const AdminBottomNav(currentIndex: 2),
+      navigation: const AdminBottomNav(currentIndex: 2),
     );
   }
 
